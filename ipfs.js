@@ -1,11 +1,6 @@
 import {create} from 'ipfs-http-client';
-let hash={
-    hash:'no Hash'
-}
-function setHash(callback){
-    callback();
-}
 export default function IPFS(){
+    let hash;
     const ipfs = create({
         host:"ipfs.infura.io",
         port:5001,
@@ -13,13 +8,12 @@ export default function IPFS(){
       });
     const  AddData= (data)=>{
         const results=  ipfs.add(data).then((result)=>{
-            setHash(()=>{hash.hash=result.path})
             return result.path;
         });
-        console.log(hash.hash);
+        hash=results;
         return results
     }
-    console.log(hash.hash);
+    console.log(hash);
     const getData= async ()=>{
         let results= await ipfs.get(hash)
         for await (data of results){
